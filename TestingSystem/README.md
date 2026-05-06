@@ -77,6 +77,35 @@ cd TestingSystem
 
 ### 2. Настройка окружения
 ```bash
+cp .env.example .env
+```
+Отредактируйте .env:
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=TestingSystem
+DB_USERNAME=postgres
+DB_PASSWORD=************
+```
 
+### 3. Установка зависимостей
+```bash
+composer install
+```
 
+### 4. Генерация ключа
+```bash
+php artisan key:generate
+```
+
+### 5. Миграции и начальные данные
+```bash
+php artisan migrate --seed
+```
+
+### 6. Запуск сервера
+```bash
+php artisan serve
+```
 
