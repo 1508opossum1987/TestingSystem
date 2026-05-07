@@ -21,7 +21,7 @@ class Result extends Model
         'log_file_path',
     ];
 
-    public function user(): belongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -31,7 +31,7 @@ class Result extends Model
         return $this->hasOne(UserLog::class, 'result_id');
     }
 
-    public function test(): belongsTo
+    public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class, 'test_id');
     }

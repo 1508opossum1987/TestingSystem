@@ -18,12 +18,12 @@ class UserLog extends Model
         'content_preview',
     ];
 
-    public function user(): belongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function result(): belongsTo
+    public function result(): BelongsTo
     {
         return $this->belongsTo(Result::class, 'result_id');
     }

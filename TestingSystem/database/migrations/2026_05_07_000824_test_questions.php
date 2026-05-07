@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema:: create('test_questions', function (Blueprint $table)
         {
-            $table->$table->id();
-            $table->foreignId('test_id')->constrained();
-            $table->foreignId('question_id')->constrained();
+            $table->id();
+            $table->foreignId('test_id')->constrained()->onDelete('cascade');
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->integer('order')->nullable();
+            $table->timestamps();
+            $table->unique(['test_id', 'question_id']);
         });
     }
 
