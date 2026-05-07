@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('level_id')->constrained();
+            $table->foreignId('topic_id')->constrained();
+            $table->integer('question_count');
             $table->timestamps();
         });
     }
