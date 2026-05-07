@@ -79,12 +79,20 @@ cd TestingSystem
 ```bash
 cp .env.example .env
 ```
+<<<<<<< HEAD
 Отредактируйте .env
+=======
+Отредактируйте .env:
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
 ```bash
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
+<<<<<<< HEAD
 DB_DATABASE=testingsystem
+=======
+DB_DATABASE=TestingSystem
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
 DB_USERNAME=postgres
 DB_PASSWORD=************
 ```
@@ -93,6 +101,7 @@ DB_PASSWORD=************
 ```bash
 composer install
 ```
+<<<<<<< HEAD
 
 ### 4. Генерация ключа
 ```bash
@@ -108,5 +117,21 @@ php artisan migrate --seed
 ```bash
 php artisan serve
 ```
+=======
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
 
+### 4. Генерация ключа
+```bash
+php artisan key:generate
+```
+
+### 5. Миграции и начальные данные
+```bash
+php artisan migrate --seed
+```
+
+### 6. Запуск сервера
+```bash
+php artisan serve
+```
 

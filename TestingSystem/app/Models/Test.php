@@ -4,9 +4,45 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
+=======
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
 
 class Test extends Model
 {
     /** @use HasFactory<\Database\Factories\TestFactory> */
     use HasFactory;
+<<<<<<< HEAD
+=======
+
+    protected $fillable = [
+        'level_id',
+        'topic_id',
+        'question_count',
+    ];
+
+    public function results(): HasMany
+    {
+        return $this->hasMany(Result::class, 'result_id');
+    }
+
+    public function topic(): BelongsTo
+    {
+        return $this->belongsTo(Topic::class, 'topic_id');
+    }
+
+    public function questionLevel(): BelongsTo
+    {
+        return $this->belongsTo(QuestionLevel::class, 'level_id');
+    }
+
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'test_question',
+            'test_id','question_id');
+    }
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
 }

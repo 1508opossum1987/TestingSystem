@@ -118,8 +118,11 @@
       <excludeFolder url="file://$MODULE_DIR$/TestingSystem/vendor/tijsverkoyen/css-to-inline-styles" />
       <excludeFolder url="file://$MODULE_DIR$/TestingSystem/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/TestingSystem/vendor/voku/portable-ascii" />
+<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/TestingSystem/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/TestingSystem/storage/framework" />
+=======
+>>>>>>> ac87530918e011c3b5528caafa7b9655965a1ff1
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
