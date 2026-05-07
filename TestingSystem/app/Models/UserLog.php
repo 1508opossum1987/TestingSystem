@@ -4,9 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserLog extends Model
 {
     /** @use HasFactory<\Database\Factories\UserLogFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'result_id',
+        'file_path',
+        'content_preview',
+    ];
+
+    public function user(): belongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function result(): belongsTo
+    {
+        return $this->belongsTo(Result::class, 'result_id');
+    }
 }
