@@ -12,7 +12,7 @@ class TestSeeder extends Seeder
 {
     public function run(): void
     {
-        $testCountForTest = 1;
+        $testCountForTest = 10;
 
         $question_level = QuestionLevel::query()->get();
         $topic = Topic::query()->get();
