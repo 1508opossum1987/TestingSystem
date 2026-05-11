@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\QuestionLevel;
 use App\Models\Test;
+use App\Models\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,15 +12,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TestFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'level_id' => QuestionLevel::inRandomOrder()->first()->id,
+            'topic_id' => Topic::inRandomOrder()->first()->id,
+            'question_count' => $this->faker->numberBetween(10, 10),
         ];
     }
 }

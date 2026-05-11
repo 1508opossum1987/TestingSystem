@@ -27,11 +27,11 @@ class User extends Authenticatable
 
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'userId');
+        return $this->hasMany(Result::class, 'user_id');
     }
 
-    public function userLogs(): HasMany
+    public function user_logs(): HasMany
     {
-        return $this->hasMany(UserLog::class, 'userId');
+        return $this->hasMany(UserLog::class, 'user_id');
     }
 }

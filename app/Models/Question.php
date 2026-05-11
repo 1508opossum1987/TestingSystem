@@ -14,27 +14,27 @@ class Question extends Model
 
 
     protected $fillable = [
-        'topicId',
-        'levelId',
-        'questionText',
+        'topic_id',
+        'level_id',
+        'question_text',
         'options',
-        'correctAnswer',
+        'correct_answer',
         'type'
     ];
 
     public function topic(): belongsTo
     {
-        return $this->belongsTo(Topic::class,'topicId');
+        return $this->belongsTo(Topic::class,'topic_id');
     }
 
-    public function questionLevel(): belongsTo
+    public function question_level(): belongsTo
     {
-        return $this->belongsTo(QuestionLevel::class, 'levelId');
+        return $this->belongsTo(QuestionLevel::class, 'level_id');
     }
 
     public function tests(): belongsToMany
     {
-        return $this->belongsToMany(Test::class, 'questionTest',
-            'questionId', 'testId');
+        return $this->belongsToMany(Test::class, 'question_test',
+            'question_id', 'test_id');
     }
 }

@@ -12,26 +12,26 @@ class Result extends Model
     use HasFactory;
 
     protected $fillable = [
-        'userId',
-        'testId',
-        'scorePercent',
+        'user_id',
+        'test_id',
+        'score_percent',
         'grade',
         'answers',
-        'logFilePath',
+        'log_file_path',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'userId');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function userLog(): HasOne
+    public function user_log(): HasOne
     {
-        return $this->hasOne(UserLog::class, 'resultId');
+        return $this->hasOne(UserLog::class, 'result_id');
     }
 
     public function test(): BelongsTo
     {
-        return $this->belongsTo(Test::class, 'testId');
+        return $this->belongsTo(Test::class, 'test_id');
     }
 }

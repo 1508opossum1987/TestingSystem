@@ -6,26 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topicId')->constrained();
-            $table->foreignId('levelId')->constrained();
-            $table->text('questionText');
+            $table->foreignId('topic_id')->constrained('topics');
+            $table->foreignId('level_id')->constrained('question_levels');
+            $table->text('question_text');
             $table->json('options');
-            $table->string('correctAnswer');
-            $table->string('type')->default('singleChoice');
+            $table->string('correct_answer');
+            $table->string('type')->default('single_choice');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('questions');

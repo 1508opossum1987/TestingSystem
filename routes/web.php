@@ -22,7 +22,7 @@ Route::prefix('questions')->name('questions.')->group(function(){
 });
 
 //QUESTIONLEVEL CONTROLLER
-Route::prefix('questionLevels')->name('questionLevels.')->group(function(){
+Route::prefix('question_levels')->name('question_levels.')->group(function(){
     Route::get('', [QuestionLevelController::class, 'index'])->name('index');
 });
 
@@ -37,7 +37,7 @@ Route::prefix('tests')->name('tests.')->group(function(){
 });
 
 //USERLOG CONTROLLER
-Route::prefix('userLogs')->name('userLogs.')->group(function(){
+Route::prefix('user_logs')->name('user_logs.')->group(function(){
     Route::get('', [UserLogController::class, 'index'])->name('index');
 });
 

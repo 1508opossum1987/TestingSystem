@@ -12,7 +12,7 @@ class QuestionController extends Controller
     {
         $questions = Question::query()
             ->orderBy('created_at')
-            ->with(['topic', 'questionLevel'])
+            ->with(['topic', 'question_level'])
             ->get();
 
         return view('questions.index', [

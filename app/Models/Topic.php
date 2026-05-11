@@ -18,11 +18,11 @@ class Topic extends Model
 
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class, 'topicId');
+        return $this->hasMany(Question::class, 'topic_id');
     }
 
     public function tests(): HasMany
     {
-        return $this->hasMany(Test::class, 'topicId');
+        return $this->hasMany(Test::class, 'topic_id');
     }
 }

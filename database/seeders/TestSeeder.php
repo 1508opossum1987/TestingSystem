@@ -12,18 +12,6 @@ class TestSeeder extends Seeder
 {
     public function run(): void
     {
-        $testCountForTest = 10;
-
-        $question_level = QuestionLevel::query()->get();
-        $topic = Topic::query()->get();
-        $question_count = 10;
-
-        for ($i = 0; $i < $testCountForTest; $i++) {
-            Test::factory([
-                    'level_id' => $question_level->id,
-                    'topic_id' => $topic->id,
-                    'question_count' => $question_count]
-            );
-        }
+        Test::factory(10)->create();
     }
 }

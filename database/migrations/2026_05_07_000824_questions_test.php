@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema:: create('questionsTest', function (Blueprint $table)
+        Schema:: create('questions_test', function (Blueprint $table)
         {
             $table->id();
-            $table->foreignId('testId')->constrained()->onDelete('cascade');
-            $table->foreignId('questionId')->constrained()->onDelete('cascade');
+            $table->foreignId('test_id')->constrained('tests');
+            $table->foreignId('question_id')->constrained('questions');
             $table->integer('order')->nullable();
             $table->timestamps();
-            $table->unique(['testId', 'questionId']);
+            $table->unique(['test_id', 'question_id']);
         });
     }
 

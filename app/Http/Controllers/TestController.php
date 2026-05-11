@@ -12,7 +12,7 @@ class TestController extends Controller
     {
         $tests = Test::query()
             ->orderBy('created_at')
-            ->with(['questionLevel', 'topic'])
+            ->with(['question_level', 'topic'])
             ->get();
 
         return view('tests.index', [

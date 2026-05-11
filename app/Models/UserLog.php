@@ -11,19 +11,19 @@ class UserLog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'userId',
-        'resultId',
-        'filePath',
-        'contentPreview',
+        'user_id',
+        'result_id',
+        'file_path',
+        'content_preview',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'userId');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function result(): BelongsTo
     {
-        return $this->belongsTo(Result::class, 'resultId');
+        return $this->belongsTo(Result::class, 'result_id');
     }
 }

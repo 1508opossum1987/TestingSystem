@@ -8,18 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('userLogs', function (Blueprint $table) {
+        Schema::create('user_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('userId')->constrained();
-            $table->foreignId('resultId')->constrained();
-            $table->string('filePath');
-            $table->text('contentPreview')->nullable();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('result_id')->constrained('results');
+            $table->string('file_path');
+            $table->text('content_preview')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('userLogs');
+        Schema::dropIfExists('user_logs');
     }
 };

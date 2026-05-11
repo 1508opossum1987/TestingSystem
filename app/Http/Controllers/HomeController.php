@@ -13,7 +13,7 @@ class HomeController extends Controller
         $query = Test::query();
 
         return view('home', ['tests' => $query
-            ->with(['topic', 'questionLevel'])
+            ->with(['topic', 'question_level'])
             ->get()
         ]);
     }

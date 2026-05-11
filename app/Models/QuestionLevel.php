@@ -17,11 +17,11 @@ class QuestionLevel extends Model
 
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class, 'levelId');
+        return $this->hasMany(Question::class, 'level_id');
     }
 
     public function tests(): HasMany
     {
-        return $this->hasMany(Test::class, 'levelId');
+        return $this->hasMany(Test::class, 'level_id');
     }
 }

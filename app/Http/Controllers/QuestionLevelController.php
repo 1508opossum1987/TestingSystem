@@ -15,8 +15,8 @@ class QuestionLevelController extends Controller
             ->orderBy('level')
             ->get();
 
-        return view('questionLevels.index', [
-            'questionLevels' => $questionLevels
+        return view('question_levels.index', [
+            'question_levels' => $questionLevels
         ]);
     }
 }

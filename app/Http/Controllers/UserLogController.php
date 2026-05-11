@@ -16,8 +16,8 @@ class UserLogController extends Controller
             ->with(['user', 'result'])
             ->get();
 
-        return view('userLog.index', [
-            'userLogs'=>$userLogs
+        return view('user_log.index', [
+            'user_logs'=>$userLogs
         ]);
     }
 }

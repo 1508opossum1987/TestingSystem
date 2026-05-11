@@ -5,26 +5,21 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('userId');
-            $table->foreignId('testId');
-            $table->integer('scorePercent');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('test_id')->constrained('tests');
+            $table->integer('score_percent');
             $table->enum('grade', [2, 3, 4, 5]);
             $table->json('answers');
-            $table->string('logFilePath');
+            $table->string('log_file_path');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('results');

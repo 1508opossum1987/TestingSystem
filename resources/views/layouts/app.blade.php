@@ -10,10 +10,10 @@
     <a href="{{ route('home') }}">Главная</a> |
     <a href="{{ route('topics.index') }}">Темы</a> |
     <a href="{{ route('questions.index') }}">Вопросы</a> |
-    <a href="{{ route('questionLevels.index') }}">Уровни</a> |
+    <a href="{{ route('question_levels.index') }}">Уровни</a> |
     <a href="{{ route('tests.index') }}">Тесты</a> |
     <a href="{{ route('results.index') }}">Результаты</a> |
-    <a href="{{ route('userLogs.index') }}">Логи</a>
+    <a href="{{ route('user_logs.index') }}">Логи</a>
 </nav>
 
 <hr>
