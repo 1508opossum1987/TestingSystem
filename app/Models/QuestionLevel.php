@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuestionLevel extends Model
 {
-    /** @use HasFactory<\Database\Factories\QuestionLevelFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -18,11 +17,11 @@ class QuestionLevel extends Model
 
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class, 'level_id');
+        return $this->hasMany(Question::class, 'levelId');
     }
 
     public function tests(): HasMany
     {
-        return $this->hasMany(Test::class, 'level_id');
+        return $this->hasMany(Test::class, 'levelId');
     }
 }

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topic_id')->constrained();
-            $table->foreignId('level_id')->constrained();
-            $table->text('question_text');
+            $table->foreignId('topicId')->constrained();
+            $table->foreignId('levelId')->constrained();
+            $table->text('questionText');
             $table->json('options');
-            $table->string('correct_answer');
-            $table->string('type')->default('single_choice');
+            $table->string('correctAnswer');
+            $table->string('type')->default('singleChoice');
             $table->timestamps();
         });
     }

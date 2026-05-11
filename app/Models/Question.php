@@ -10,32 +10,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Question extends Model
 {
-    /** @use HasFactory<\Database\Factories\QuestionFactory> */
     use HasFactory;
 
 
     protected $fillable = [
-        'topic_id',
-        'level_id',
-        'question_text',
+        'topicId',
+        'levelId',
+        'questionText',
         'options',
-        'correct_answer',
+        'correctAnswer',
         'type'
     ];
 
     public function topic(): belongsTo
     {
-        return $this->belongsTo(Topic::class,'topic_id');
+        return $this->belongsTo(Topic::class,'topicId');
     }
 
     public function questionLevel(): belongsTo
     {
-        return $this->belongsTo(QuestionLevel::class, 'level_id');
+        return $this->belongsTo(QuestionLevel::class, 'levelId');
     }
 
     public function tests(): belongsToMany
     {
-        return $this->belongsToMany(Test::class, 'test_question',
-            'question_id', 'test_id');
+        return $this->belongsToMany(Test::class, 'questionTest',
+            'questionId', 'testId');
     }
 }

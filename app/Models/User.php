@@ -15,14 +15,8 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -33,11 +27,11 @@ class User extends Authenticatable
 
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'user_id');
+        return $this->hasMany(Result::class, 'userId');
     }
 
     public function userLogs(): HasMany
     {
-        return $this->hasMany(UserLog::class, 'user_id');
+        return $this->hasMany(UserLog::class, 'userId');
     }
 }

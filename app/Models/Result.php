@@ -9,30 +9,29 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Result extends Model
 {
-    /** @use HasFactory<\Database\Factories\ResultFactory> */
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'test_id',
-        'score_percent',
+        'userId',
+        'testId',
+        'scorePercent',
         'grade',
         'answers',
-        'log_file_path',
+        'logFilePath',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'userId');
     }
 
     public function userLog(): HasOne
     {
-        return $this->hasOne(UserLog::class, 'result_id');
+        return $this->hasOne(UserLog::class, 'resultId');
     }
 
     public function test(): BelongsTo
     {
-        return $this->belongsTo(Test::class, 'test_id');
+        return $this->belongsTo(Test::class, 'testId');
     }
 }

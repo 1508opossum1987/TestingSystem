@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Topic extends Model
 {
-    /** @use HasFactory<\Database\Factories\TopicFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -19,11 +18,11 @@ class Topic extends Model
 
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class, 'topic_id');
+        return $this->hasMany(Question::class, 'topicId');
     }
 
     public function tests(): HasMany
     {
-        return $this->hasMany(Test::class, 'topic_id');
+        return $this->hasMany(Test::class, 'topicId');
     }
 }

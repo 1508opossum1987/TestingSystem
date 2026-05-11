@@ -12,12 +12,12 @@ return new class extends Migration {
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('test_id');
-            $table->integer('score_percent');
+            $table->foreignId('userId');
+            $table->foreignId('testId');
+            $table->integer('scorePercent');
             $table->enum('grade', [2, 3, 4, 5]);
             $table->json('answers');
-            $table->string('log_file_path');
+            $table->string('logFilePath');
             $table->timestamps();
         });
     }

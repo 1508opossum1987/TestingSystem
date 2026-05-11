@@ -2,9 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserLog;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UserLogController extends Controller
 {
-    //
+    //Возможно не пригодится
+    public function index(): View
+    {
+        $userLogs=UserLog::query()
+            ->orderBy('created_at')
+            ->with(['user', 'result'])
+            ->get();
+
+        return view('userLog.index', [
+            'userLogs'=>$userLogs
+        ]);
+    }
 }

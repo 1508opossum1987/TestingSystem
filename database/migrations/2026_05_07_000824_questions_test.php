@@ -6,25 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema:: create('test_questions', function (Blueprint $table)
+        Schema:: create('questionsTest', function (Blueprint $table)
         {
             $table->id();
-            $table->foreignId('test_id')->constrained()->onDelete('cascade');
-            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->foreignId('testId')->constrained()->onDelete('cascade');
+            $table->foreignId('questionId')->constrained()->onDelete('cascade');
             $table->integer('order')->nullable();
             $table->timestamps();
-            $table->unique(['test_id', 'question_id']);
+            $table->unique(['testId', 'questionId']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         //

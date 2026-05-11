@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('question_levels', function (Blueprint $table) {
+        Schema::create('questionLevels', function (Blueprint $table) {
             $table->id();
             $table->enum('level', [1, 2, 3, 4]);
             $table->timestamps();
@@ -22,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_levels');
+        Schema::dropIfExists('questionLevels');
     }
 };

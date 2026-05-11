@@ -15,29 +15,29 @@ class Test extends Model
     use HasFactory;
 
     protected $fillable = [
-        'level_id',
-        'topic_id',
-        'question_count',
+        'levelId',
+        'topicId',
+        'questionCount',
     ];
 
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'result_id');
+        return $this->hasMany(Result::class, 'resultId');
     }
 
     public function topic(): BelongsTo
     {
-        return $this->belongsTo(Topic::class, 'topic_id');
+        return $this->belongsTo(Topic::class, 'topicId');
     }
 
     public function questionLevel(): BelongsTo
     {
-        return $this->belongsTo(QuestionLevel::class, 'level_id');
+        return $this->belongsTo(QuestionLevel::class, 'levelId');
     }
 
     public function questions(): BelongsToMany
     {
-        return $this->belongsToMany(Question::class, 'test_question',
-            'test_id','question_id');
+        return $this->belongsToMany(Question::class, 'questionTest',
+            'testId','questionId');
     }
 }
