@@ -12,7 +12,7 @@ class QuestionLevelController extends Controller
     public function index(): View
     {
         $questionLevels = QuestionLevel::query()
-            ->orderBy('level')
+            ->orderBy('question_level')
             ->get();
 
         return view('question_levels.index', [

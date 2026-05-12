@@ -15,7 +15,7 @@ class ResultController extends Controller
             ->with(['user', 'test'])
             ->get();
 
-        return view('result.index', [
+        return view('results.index', [
             'results' => $results
         ]);
     }

@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ $question->id }}</td>
                 <td>{{ $question->topic->name }}</td>
-                <td>{{ $question->questionLevel->level }}</td>
+                <td>{{ $question->question_level->level }}</td>
                 <td>{{ $question->question_text }}</td>
                 <td>
                     <button>Просмотр</button>

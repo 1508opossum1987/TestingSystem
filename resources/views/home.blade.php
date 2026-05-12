@@ -16,7 +16,7 @@
         @foreach($tests as $test)
             <tr>
                 <td>{{ $test->topic->name }}</td>
-                <td>{{ $test->questionLevel->level }}</td>
+                <td>{{ $test->question_level->level }}</td>
                 <td>{{ $test->question_count }}</td>
                 <td>
                     <button>Начать тест</button>

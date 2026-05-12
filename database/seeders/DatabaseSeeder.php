@@ -44,11 +44,11 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
+            TopicSeeder::class,
             QuestionLevelSeeder::class,
             QuestionSeeder::class,
-            ResultSeeder::class,
             TestSeeder::class,
-            TopicSeeder::class,
+            ResultSeeder::class,
             UserLogSeeder::class,
             UserSeeder::class,
         ]);

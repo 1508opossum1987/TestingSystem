@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ $result->id }}</td>
                 <td>{{ $result->user->name }}</td>
-                <td>{{ $result->test->topic->name }} ({{ $result->test->questionLevel->level }} кл.)</td>
+                <td>{{ $result->test->topic->name }} ({{ $result->test->question_level->level }} кл.)</td>
                 <td>{{ $result->score_percent }}%</td>
                 <td>{{ $result->grade }}</td>
                 <td>{{ $result->created_at }}</td>
