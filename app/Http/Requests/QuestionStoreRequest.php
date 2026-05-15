@@ -17,7 +17,7 @@ class QuestionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'topic_id' => 'required|exists;topics,id',
+            'topic_id' => 'required|exists:topics,id',
             'level_id' => 'required|exists:question_levels,id|in:1,2,3,4',
             'question_text' => ['required', 'string', 'min:15', 'max:255', 'unique:questions,question_text', new RussianCharsRule(99, 'Текст вопроса')],
             'options' => ['required', 'json', new OptionsStructureRule($this->input('type', 'single_choice'))],

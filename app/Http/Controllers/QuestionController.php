@@ -90,12 +90,12 @@ class QuestionController extends Controller
             $question->restore();
             return redirect()
                 ->route('questions.index')
-                ->with('success', "Тема '{$questionName}' успешно восстановлена!");
+                ->with('success', "Вопрос '{$questionName}' успешно восстановлен!");
         }
 
         return redirect()
             ->route('questions.index')
-            ->with('success', "Тема '{$questionName}' не удалялась!");
+            ->with('success', "Вопрос '{$questionName}' не удалялся!");
     }
 
     public function forceDetroy($id): RedirectResponse

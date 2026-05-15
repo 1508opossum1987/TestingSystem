@@ -36,7 +36,7 @@ Route::prefix('questions')->name('questions.')->group(function () {
     Route::delete('{question}', [QuestionController::class, 'destroy'])->name('destroy');
     Route::put('{question}/restore', [QuestionController::class, 'restore'])->name('restore');
     Route::delete('{question}/forceDestroy', [QuestionController::class, 'forceDestroy'])->name('forceDestroy');
-    Route::delete('trashed', [QuestionController::class, 'trashed'])->name('trashed');
+    Route::get('trashed', [QuestionController::class, 'trashed'])->name('trashed');
 
 });
 
@@ -48,11 +48,27 @@ Route::prefix('question_levels')->name('question_levels.')->group(function () {
 //RESULT CONTROLLER
 Route::prefix('results')->name('results.')->group(function () {
     Route::get('', [ResultController::class, 'index'])->name('index');
+    Route::get('create', [ResultController::class, 'create'])->name('create');
+    Route::get('', [ResultController::class, 'store'])->name('store');
+    Route::get('{result}', [ResultController::class, 'show'])->name('show');
+    Route::delete('{result}', [ResultController::class, 'destroy'])->name('destroy');
+    Route::put('{result}/restore', [ResultController::class, 'restore'])->name('restore');
+    Route::delete('{result}/forceDestroy', [ResultController::class, 'forceDestroy'])->name('forceDestroy');
+    Route::get('trashed', [ResultController::class, 'trashed'])->name('trashed');
 });
 
 //TEST CONTROLLER
 Route::prefix('tests')->name('tests.')->group(function () {
     Route::get('', [TestController::class, 'index'])->name('index');
+    Route::get('create', [TestController::class, 'create'])->name('create');
+    Route::post('', [TestController::class, 'store'])->name('store');
+    Route::get('{test}', [TestController::class, 'show'])->name('show');
+    Route::get('{test}/edit', [TestController::class, 'edit'])->name('edit');
+    Route::put('{test}', [TestController::class, 'update'])->name('update');
+    Route::delete('{test}', [TestController::class, 'destroy'])->name('destroy');
+    Route::put('{test}/restore', [TestController::class, 'restore'])->name('restore');
+    Route::delete('{test}/forceDestroy', [TestController::class, 'forceDestroy'])->name('forceDestroy');
+    Route::get('trashed', [TestController::class, 'trashed'])->name('trashed');
 });
 
 //USERLOG CONTROLLER
