@@ -17,9 +17,9 @@ class OptionsStructureRule implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $options = json_decode($value, true);
+        $options = is_array($value) ? $value : json_decode($value, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE || !is_array($options)) {
+        if (!is_array($options)) {
             $fail('Поле :attribute должно содержать валидный JSON массив.');
             return;
         }

@@ -100,7 +100,7 @@ class ResultController extends Controller
             ->with('success', "Результат '{$resultId}' не удалялся!");
     }
 
-    public function forceDetroy($id): RedirectResponse
+    public function forceDestroy($id): RedirectResponse
     {
         $result = Result::withTrashed()
             ->findOrFail($id);

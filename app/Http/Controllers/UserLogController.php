@@ -20,4 +20,9 @@ class UserLogController extends Controller
             'user_logs'=>$userLogs
         ]);
     }
+
+    public function show(UserLog $user_log): View
+    {
+        return view('user_log.show', ['user_log'=>$user_log]);
+    }
 }

@@ -10,13 +10,13 @@ class QuestionLevelSeeder extends Seeder
 {
     public function run(): void
     {
-        $question_levels = [
-            1, 2, 3, 4
-        ];
+        $levels = [1, 2, 3, 4];
 
-        foreach ($question_levels as $question_level) {
-            QuestionLevel:: query()
-                ->firstOrCreate(['question_level' => $question_level], ['question_level' => $question_level]);
+        foreach ($levels as $level) {
+            QuestionLevel::firstOrCreate(
+                ['level' => $level],
+                ['level' => $level]
+            );
         }
     }
 }

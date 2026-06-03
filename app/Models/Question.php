@@ -38,4 +38,9 @@ class Question extends Model
         return $this->belongsToMany(Test::class, 'question_test',
             'question_id', 'test_id');
     }
+
+    public function setOptionsAttribute($value)
+    {
+        $this->attributes['options'] = is_array($value) ? json_encode($value) : $value;
+    }
 }

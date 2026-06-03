@@ -27,6 +27,11 @@ class TopicController extends Controller
         return view('topics.create');
     }
 
+    public function edit(Topic $topic): View
+    {
+        return view('topics.edit', ['topic' => $topic]);
+    }
+
     public function store(TopicStoreRequest $topicStoreRequest): RedirectResponse
     {
         $validated = $topicStoreRequest->validated();
@@ -100,7 +105,7 @@ class TopicController extends Controller
             ->with('success', "Тема '{$topicName}' не удалялась!");
     }
 
-    public function forceDetroy($id): RedirectResponse
+    public function forceDestroy($id): RedirectResponse
     {
         $topic = Topic::withTrashed()
             ->findOrFail($id);

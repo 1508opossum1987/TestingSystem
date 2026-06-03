@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TestStoreRequest;
+use App\Models\QuestionLevel;
 use App\Models\Test;
+use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -24,7 +26,25 @@ class TestController extends Controller
 
     public function create(): View
     {
-        return view('tests.create');
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
+
+        return view('tests.create', [
+            'topics' => $topics,
+            'levels' => $levels
+        ]);
+    }
+
+    public function edit(Test $test): View
+    {
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
+
+        return view('tests.edit', [
+            'test' => $test,
+            'topics' => $topics,
+            'levels' => $levels
+        ]);
     }
 
     public function store(TestStoreRequest $testStoreRequest): RedirectResponse
@@ -35,7 +55,7 @@ class TestController extends Controller
 
         return redirect()
             ->route('tests.index')
-            ->with('success', "Вопрос '{$test->id}' успешно создан!");
+            ->with('success', "Тест успешно создан!");
 
     }
 
@@ -48,11 +68,7 @@ class TestController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            $test->id = $validated['id'];
-        } catch (\Exception $exception) {
-            abort(500, $exception->getMessage());
-        }
+        $test->update($validated);
 
         return redirect()
             ->route('tests.index')
@@ -95,7 +111,7 @@ class TestController extends Controller
             ->with('success', "Тест '{$testId}' не удалялся!");
     }
 
-    public function forceDetroy($id): RedirectResponse
+    public function forceDestroy($id): RedirectResponse
     {
         $test = Test::withTrashed()
             ->findOrFail($id);

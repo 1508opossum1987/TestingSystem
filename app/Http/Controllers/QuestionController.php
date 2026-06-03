@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuestionStoreRequest;
 use App\Http\Requests\TopicStoreRequest;
 use App\Models\Question;
+use App\Models\QuestionLevel;
 use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,12 @@ class QuestionController extends Controller
 
     public function create(): View
     {
-        return view('questions.create');
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
+        return view('questions.create', [
+            'topics' => $topics,
+            'levels' => $levels
+        ]);
     }
 
     public function store(QuestionStoreRequest $questionStoreRequest): RedirectResponse
@@ -47,15 +53,27 @@ class QuestionController extends Controller
         return view('questions.show', ['question' => $question]);
     }
 
+    public function edit(Question $question): View
+    {
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
+
+        return view('questions.edit', [
+            'question' => $question,
+            'topics' => $topics,
+            'question_levels' => $levels
+        ]);
+    }
+
     public function update(QuestionStoreRequest $request, Question $question): RedirectResponse
     {
         $validated = $request->validated();
 
-        try {
-            $question->name = $validated['name'];
-        } catch (\Exception $exception) {
-            abort(500, $exception->getMessage());
+        if (isset($validated['options']) && is_array($validated['options'])) {
+            $validated['options'] = json_encode($validated['options']);
         }
+
+        $question->update($validated);
 
         return redirect()
             ->route('questions.index')
@@ -98,7 +116,7 @@ class QuestionController extends Controller
             ->with('success', "Вопрос '{$questionName}' не удалялся!");
     }
 
-    public function forceDetroy($id): RedirectResponse
+    public function forceDestroy($id): RedirectResponse
     {
         $question = Question::withTrashed()
             ->findOrFail($id);

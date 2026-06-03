@@ -12,10 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($question_levels as $level)
+        @foreach($levels as $level)
             <tr>
                 <td>{{ $level->id }}</td>
-                <td>{{ $level->level }} класс</td>
+                <td>{{ $level->question_level }} класс</td>
                 <td>
                     <button>Просмотр</button>
                 </td>
