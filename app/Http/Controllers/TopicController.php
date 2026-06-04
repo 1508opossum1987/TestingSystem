@@ -11,11 +11,12 @@ use Illuminate\View\View;
 
 class TopicController extends Controller
 {
+    const PAGINATE_PER_PAGE = 15;
     public function index(): View
     {
         $topics = Topic::query()
             ->orderBy('name')
-            ->get();
+            ->paginate(self::PAGINATE_PER_PAGE);
 
         return view(
             'topics.index', ['topics' => $topics]

@@ -11,16 +11,27 @@ use Illuminate\View\View;
 
 class ResultController extends Controller
 {
+    const PAGINATE_PER_PAGE = 15;
     public function index(): View
     {
-        $results = Result::query()
-            ->orderBy('created_at')
-            ->with(['user', 'test'])
-            ->get();
+        if (auth()->user()->role === 'admin' || auth()->user()->role === 'teacher') {
+            $results = Result::with(['user', 'test'])->paginate(20);
+        } else {
+            $results = Result::where('user_id', auth()->id())
+                ->with(['test'])
+                ->paginate(self::PAGINATE_PER_PAGE);
+        }
 
-        return view('results.index', [
-            'results' => $results
-        ]);
+        return view('results.index', ['results' => $results]);
+    }
+
+    public function myResults(): View
+    {
+        $results = Result::where('user_id', auth()->id())
+            ->with(['test'])
+            ->paginate(20);
+
+        return view('results.my', ['results' => $results]);
     }
 
     public function create(): View
@@ -124,4 +135,6 @@ class ResultController extends Controller
         $results = Result::onlyTrashed()->orderBy('id')->get();
         return view('results.trashed', ['results' => $results]);
     }
+
+
 }

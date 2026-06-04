@@ -14,12 +14,13 @@ use Illuminate\View\View;
 
 class QuestionController extends Controller
 {
+    const PAGINATE_PER_PAGE = 15;
     public function index(): View
     {
         $questions = Question::query()
             ->orderBy('created_at')
             ->with(['topic', 'question_level'])
-            ->get();
+            ->paginate(self::PAGINATE_PER_PAGE);
 
         return view('questions.index', [
             'questions' => $questions

@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Test;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class HomeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(): View
     {
-        $query = Test::query();
+        $tests = Test::with(['topic', 'question_level'])->get();
 
-        return view('home', ['tests' => $query
-            ->with(['topic', 'question_level'])
-            ->get()
-        ]);
+        return view('home', ['tests' => $tests]);
     }
 }

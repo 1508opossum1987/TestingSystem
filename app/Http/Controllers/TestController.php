@@ -12,12 +12,13 @@ use Illuminate\View\View;
 
 class TestController extends Controller
 {
+    const PAGINATE_PER_PAGE = 15;
     public function index(): View
     {
         $tests = Test::query()
             ->orderBy('created_at')
             ->with(['question_level', 'topic'])
-            ->get();
+            ->paginate(self::PAGINATE_PER_PAGE);
 
         return view('tests.index', [
             'tests' => $tests
@@ -77,6 +78,10 @@ class TestController extends Controller
 
     public function destroy(Test $test): RedirectResponse
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Только администратор может удалять тесты');
+        }
+
         $testId = $test->id;
 
         if ($test->questions()->exists()) {
