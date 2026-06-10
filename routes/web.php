@@ -168,3 +168,11 @@ Route::post('/logout', function () {
 Route::put('/admin/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
     ->name('admin.users.toggleActive');
 
+//GO TESTS
+Route::middleware(['auth', 'active'])->group(function () {
+    Route::get('/tests/{test}/start', [TestController::class, 'start'])->name('tests.start');
+    Route::post('/tests/{test}/answer', [TestController::class, 'saveAnswer'])->name('tests.saveAnswer');
+    Route::post('/tests/{test}/complete', [TestController::class, 'complete'])->name('tests.complete');
+    Route::get('/tests/{test}/result/{result}', [TestController::class, 'result'])->name('tests.result');
+});
+

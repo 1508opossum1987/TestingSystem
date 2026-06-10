@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Cache;
+
+class TestSessionService
+{
+    private function getKey(int $userId, int $testId): string
+    {
+        return "test_session:{$userId}:{$testId}";
+    }
+
+    public function startSession(int $userId, int $testId, array $questions): void
+    {
+        $data = [
+            'test_id' => $testId,
+            'user_id' => $userId,
+            'answers' => [],
+            'started_at' => now()->toDateTimeString(),
+        ];
+
+        foreach ($questions as $question) {
+            $data['answers'][$question['id']] = null;
+        }
+
+        Cache::put($this->getKey($userId, $testId), $data, 3600); // 1 час
+    }
+
+    public function getSession(int $userId, int $testId): ?array
+    {
+        return Cache::get($this->getKey($userId, $testId));
+    }
+
+    public function saveAnswer(int $userId, int $testId, int $questionId, string $answer): void
+    {
+        $session = $this->getSession($userId, $testId);
+
+        if ($session) {
+            $session['answers'][$questionId] = $answer;
+            Cache::put($this->getKey($userId, $testId), $session, 3600);
+        }
+    }
+
+    public function getAnswer(int $userId, int $testId, int $questionId): ?string
+    {
+        $session = $this->getSession($userId, $testId);
+
+        return $session['answers'][$questionId] ?? null;
+    }
+
+    public function getAllAnswers(int $userId, int $testId): array
+    {
+        $session = $this->getSession($userId, $testId);
+
+        return $session['answers'] ?? [];
+    }
+
+    public function getStartedAt(int $userId, int $testId): ?string
+    {
+        $session = $this->getSession($userId, $testId);
+
+        return $session['started_at'] ?? null;
+    }
+
+    public function clearSession(int $userId, int $testId): void
+    {
+        Cache::forget($this->getKey($userId, $testId));
+    }
+}

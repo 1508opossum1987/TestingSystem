@@ -34,6 +34,11 @@
                 <td>
                     <a href="{{ route('tests.show', $test) }}"><button>Просмотр</button></a>
                     <a href="{{ route('tests.edit', $test) }}"><button>Редактировать</button></a>
+                    @auth
+                        <a href="{{ route('tests.start', $test) }}"><button style="background-color: green; color: white;">Начать тест</button></a>
+                    @else
+                        <button disabled style="background-color: gray;" title="Для прохождения теста необходимо авторизоваться">Начать тест</button>
+                    @endauth
 
                     <form action="{{ route('tests.destroy', $test) }}" method="POST" style="display:inline;">
                         @csrf

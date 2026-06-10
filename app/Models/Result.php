@@ -17,7 +17,7 @@ class Result extends Model
         'test_id',
         'score_percent',
         'grade',
-        'answers',
+        'answers_file_path',
         'log_file_path',
     ];
 

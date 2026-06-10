@@ -2,17 +2,111 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TestCompletedEvent;
 use App\Http\Requests\TestStoreRequest;
 use App\Models\QuestionLevel;
+use App\Models\Result;
 use App\Models\Test;
 use App\Models\Topic;
+use App\Services\TestSessionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+
+
 
 class TestController extends Controller
 {
     const PAGINATE_PER_PAGE = 15;
+
+    public function start(Test $test, TestSessionService $sessionService)
+    {
+        $questions = $test->questions()->with('question_level')->get();
+
+        if ($questions->isEmpty()) {
+            return redirect()->route('tests.show', $test)
+                ->with('error', 'В этом тесте нет вопросов.');
+        }
+
+        $questionsArray = $questions->map(function ($q) {
+            return [
+                'id' => $q->id,
+                'question_text' => $q->question_text,
+                'options' => json_decode($q->options, true),
+            ];
+        })->toArray();
+
+        $sessionService->startSession(auth()->id(), $test->id, $questionsArray);
+
+        return redirect()->route('tests.answer', $test);
+    }
+
+    public function answer(Test $test, TestSessionService $sessionService)
+    {
+        $session = $sessionService->getSession(auth()->id(), $test->id);
+
+        if (!$session) {
+            return redirect()->route('tests.show', $test)
+                ->with('error', 'Сессия теста истекла. Начните тест заново.');
+        }
+
+        $questions = $test->questions()->get();
+        $answers = $session['answers'];
+
+        $currentQuestion = null;
+        $currentQuestionId = null;
+
+        foreach ($questions as $question) {
+            if (is_null($answers[$question->id] ?? null)) {
+                $currentQuestion = $question;
+                $currentQuestionId = $question->id;
+                break;
+            }
+        }
+
+        $allAnswered = ($currentQuestion === null);
+
+        if ($allAnswered) {
+            return view('tests.complete', [
+                'test' => $test,
+                'answers' => $answers,
+            ]);
+        }
+
+        $options = json_decode($currentQuestion->options, true);
+
+        return view('tests.answer', [
+            'test' => $test,
+            'question' => $currentQuestion,
+            'options' => $options,
+            'currentAnswer' => $answers[$currentQuestionId] ?? null,
+            'answeredCount' => count(array_filter($answers)),
+            'totalCount' => $questions->count(),
+        ]);
+    }
+
+    public function saveAnswer(Request $request, Test $test, TestSessionService $sessionService)
+    {
+        $request->validate([
+            'question_id' => 'required|exists:questions,id',
+            'answer' => 'required|string|in:A,B,C,D',
+            'next' => 'nullable|boolean',
+        ]);
+
+        $sessionService->saveAnswer(
+            auth()->id(),
+            $test->id,
+            $request->question_id,
+            $request->answer
+        );
+
+        if ($request->has('next') && $request->next == 1) {
+            return redirect()->route('tests.answer', $test);
+        }
+
+        return redirect()->route('tests.answer', $test);
+    }
     public function index(): View
     {
         $tests = Test::query()
@@ -22,6 +116,70 @@ class TestController extends Controller
 
         return view('tests.index', [
             'tests' => $tests
+        ]);
+    }
+
+    public function complete(Test $test, TestSessionService $sessionService)
+    {
+        $session = $sessionService->getSession(auth()->id(), $test->id);
+
+        if (!$session) {
+            return redirect()->route('tests.show', $test)
+                ->with('error', 'Сессия теста истекла.');
+        }
+
+        $answers = $session['answers'];
+
+        $questions = $test->questions()->get();
+        $allAnswered = true;
+
+        foreach ($questions as $question) {
+            if (is_null($answers[$question->id] ?? null)) {
+                $allAnswered = false;
+                break;
+            }
+        }
+
+        if (!$allAnswered) {
+            return redirect()->route('tests.answer', $test)
+                ->with('error', 'Ответьте на все вопросы перед завершением.');
+        }
+
+        event(new TestCompletedEvent(
+            auth()->id(),
+            $test->id,
+            $answers,
+            $session['started_at'],
+            now()->toDateTimeString()
+        ));
+
+        $sessionService->clearSession(auth()->id(), $test->id);
+
+        return redirect()->route('tests.result', $test)
+            ->with('success', 'Тест успешно завершён!');
+    }
+
+    public function result(Test $test)
+    {
+        $result = Result::where('user_id', auth()->id())
+            ->where('test_id', $test->id)
+            ->latest()
+            ->first();
+
+        if (!$result) {
+            return redirect()->route('tests.show', $test)
+                ->with('error', 'Результат не найден.');
+        }
+
+        $details = null;
+        if ($result->answers_file_path && Storage::exists($result->answers_file_path)) {
+            $details = json_decode(Storage::get($result->answers_file_path), true);
+        }
+
+        return view('tests.result', [
+            'test' => $test,
+            'result' => $result,
+            'details' => $details,
         ]);
     }
 
