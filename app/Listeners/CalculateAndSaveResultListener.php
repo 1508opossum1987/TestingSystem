@@ -3,8 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\TestCompletedEvent;
+use App\Jobs\SaveResultFileJob;
+use App\Jobs\SendWebSocketNotificationJob;
 use App\Models\Question;
 use App\Models\Result;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 class CalculateAndSaveResultListener
@@ -42,6 +45,10 @@ class CalculateAndSaveResultListener
             default => 2,
         };
 
+        // Получаем имя пользователя
+        $user = User::find($event->userId);
+        $userName = $user->name ?? 'Неизвестно';
+
         $filePath = $this->saveDetailsToFile($event, $answersDetail, $scorePercent, $grade);
 
         $result = Result::create([
@@ -52,7 +59,18 @@ class CalculateAndSaveResultListener
             'answers_file_path' => $filePath,
         ]);
 
+        SaveResultFileJob::dispatch($result->id, $answersDetail, $scorePercent, $grade, $event->userId, $event->testId);
+
         $event->resultId = $result->id;
+        $event->scorePercent = $scorePercent;
+
+        SendWebSocketNotificationJob::dispatch(
+            "Пользователь {$userName} завершил тест",
+            $result->id,
+            $event->userId,
+            $userName,
+            $scorePercent
+        );
     }
 
     private function saveDetailsToFile($event, $answersDetail, $scorePercent, $grade): string

@@ -12,15 +12,25 @@ use Illuminate\View\View;
 class TopicController extends Controller
 {
     const PAGINATE_PER_PAGE = 15;
-    public function index(): View
+    public function index(Request $request): View
     {
-        $topics = Topic::query()
-            ->orderBy('name')
-            ->paginate(self::PAGINATE_PER_PAGE);
+        $query = Topic::query();
 
-        return view(
-            'topics.index', ['topics' => $topics]
-        );
+        // Поиск по названию
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $topics = $query
+            ->orderBy('name')
+            ->paginate(self::PAGINATE_PER_PAGE)
+            ->withQueryString();
+
+        return view('topics.index', [
+            'topics' => $topics,
+            'filters' => $request->only(['search']),
+        ]);
     }
 
     public function create(): View

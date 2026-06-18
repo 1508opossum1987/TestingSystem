@@ -27,6 +27,8 @@ class TestCompletedEvent
         $this->answers = $answers;
         $this->startedAt = $startedAt;
         $this->completedAt = $completedAt;
+        $this->resultId = null;
+        $this->scorePercent = null;
     }
 
     public function broadcastOn(): array

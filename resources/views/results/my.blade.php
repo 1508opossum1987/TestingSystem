@@ -26,5 +26,7 @@
         </tbody>
     </table>
 
-    {{ $results->links() }}
+    <div style="margin-top: 15px;">
+        {{ $results->links() }}
+    </div>
 @endsection

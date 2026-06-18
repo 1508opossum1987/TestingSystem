@@ -8,13 +8,13 @@ use Illuminate\View\View;
 
 class UserLogController extends Controller
 {
-    //Возможно не пригодится
+    const PER_PAGE = 15;
     public function index(): View
     {
         $userLogs=UserLog::query()
             ->orderBy('created_at')
             ->with(['user', 'result'])
-            ->get();
+            ->paginate(self::PER_PAGE);
 
         return view('user_logs.index', [
             'user_logs'=>$userLogs

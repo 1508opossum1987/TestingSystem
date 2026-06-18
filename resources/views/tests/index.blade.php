@@ -13,7 +13,36 @@
 
     <a href="{{ route('tests.create') }}"><button>Создать тест</button></a>
     <a href="{{ route('tests.trashed') }}" style="margin-left: 10px;"><button>Корзина</button></a>
-
+    <div style="margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f8f9fa;">
+        <form action="{{ route('tests.index') }}" method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+            <div>
+                <label for="topic_id">Тема:</label>
+                <select name="topic_id" id="topic_id" style="padding: 5px;">
+                    <option value="">Все темы</option>
+                    @foreach($topics as $topic)
+                        <option value="{{ $topic->id }}" {{ request('topic_id') == $topic->id ? 'selected' : '' }}>
+                            {{ $topic->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="level_id">Уровень:</label>
+                <select name="level_id" id="level_id" style="padding: 5px;">
+                    <option value="">Все уровни</option>
+                    @foreach($levels as $level)
+                        <option value="{{ $level->id }}" {{ request('level_id') == $level->id ? 'selected' : '' }}>
+                            {{ $level->question_level }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <button type="submit" style="padding: 5px 15px;">Применить</button>
+                <a href="{{ route('tests.index') }}" style="padding: 5px 15px;">Сбросить</a>
+            </div>
+        </form>
+    </div>
     <table border="1" cellpadding="8" style="margin-top: 15px;">
         <thead>
         <tr>
@@ -49,4 +78,9 @@
             </tr>
         @endforeach
         </tbody>
+    </table>
+
+    <div style="margin-top: 15px;">
+        {{ $tests->links() }}
+    </div>
 @endsection

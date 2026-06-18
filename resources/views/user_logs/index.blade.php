@@ -30,4 +30,9 @@
             </tr>
         @endforeach
         </tbody>
+    </table>
+
+    <div style="margin-top: 15px;">
+        {{ $user_logs->links() }}
+    </div>
 @endsection

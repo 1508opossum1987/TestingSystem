@@ -42,15 +42,21 @@
                             <button type="submit">Восстановить</button>
                         </form>
 
-                        <form action="{{ route('tests.forceDestroy', $test->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('tests.forceDestroy', $test->id) }}" method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Удалить навсегда?')">Удалить навсегда</button>
+                            <button type="submit" onclick="return confirm('Удалить навсегда?')">Удалить навсегда
+                            </button>
                         </form>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
+        <div style="margin-top: 15px;">
+            {{ $tests->links() }}
+        </div>
     @endif
 @endsection

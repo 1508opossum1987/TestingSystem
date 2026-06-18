@@ -14,7 +14,18 @@
     <a href="{{ route('topics.create') }}">
         <button>Создать тему</button>
     </a>
-
+    <div style="margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f8f9fa;">
+        <form action="{{ route('topics.index') }}" method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+            <div>
+                <label for="search">Поиск:</label>
+                <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Название темы..." style="padding: 5px; width: 250px;">
+            </div>
+            <div>
+                <button type="submit" style="padding: 5px 15px;">Найти</button>
+                <a href="{{ route('topics.index') }}" style="padding: 5px 15px;">Сбросить</a>
+            </div>
+        </form>
+    </div>
     <table border="1" cellpadding="8">
         <thead>
         <tr>
@@ -44,6 +55,12 @@
                 </td>
             </tr>
         @endforeach
+
         <a href="{{ route('topics.trashed') }}">Корзина</a>
         </tbody>
+    </table>
+
+    <div style="margin-top: 15px;">
+        {{ $topics->links() }}
+    </div>
 @endsection

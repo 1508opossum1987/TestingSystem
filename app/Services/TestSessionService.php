@@ -18,13 +18,14 @@ class TestSessionService
             'user_id' => $userId,
             'answers' => [],
             'started_at' => now()->toDateTimeString(),
+            'current_question_index' => 0, // Индекс текущего вопроса
         ];
 
         foreach ($questions as $question) {
             $data['answers'][$question['id']] = null;
         }
 
-        Cache::put($this->getKey($userId, $testId), $data, 3600); // 1 час
+        Cache::put($this->getKey($userId, $testId), $data, 3600);
     }
 
     public function getSession(int $userId, int $testId): ?array
@@ -61,6 +62,23 @@ class TestSessionService
         $session = $this->getSession($userId, $testId);
 
         return $session['started_at'] ?? null;
+    }
+
+    public function getCurrentQuestionIndex(int $userId, int $testId): int
+    {
+        $session = $this->getSession($userId, $testId);
+
+        return $session['current_question_index'] ?? 0;
+    }
+
+    public function setCurrentQuestionIndex(int $userId, int $testId, int $index): void
+    {
+        $session = $this->getSession($userId, $testId);
+
+        if ($session) {
+            $session['current_question_index'] = $index;
+            Cache::put($this->getKey($userId, $testId), $session, 3600);
+        }
     }
 
     public function clearSession(int $userId, int $testId): void

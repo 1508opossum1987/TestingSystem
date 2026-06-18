@@ -42,7 +42,7 @@ class TestController extends Controller
         return redirect()->route('tests.answer', $test);
     }
 
-    public function answer(Test $test, TestSessionService $sessionService)
+    public function answer(Test $test, TestSessionService $sessionService, Request $request)
     {
         $session = $sessionService->getSession(auth()->id(), $test->id);
 
@@ -53,36 +53,47 @@ class TestController extends Controller
 
         $questions = $test->questions()->get();
         $answers = $session['answers'];
+        $totalCount = $questions->count();
+        $answeredCount = count(array_filter($answers));
 
-        $currentQuestion = null;
-        $currentQuestionId = null;
+        $currentIndex = $request->get('index', $session['current_question_index'] ?? 0);
 
-        foreach ($questions as $question) {
-            if (is_null($answers[$question->id] ?? null)) {
-                $currentQuestion = $question;
-                $currentQuestionId = $question->id;
-                break;
-            }
+        if ($currentIndex >= $totalCount) {
+            $currentIndex = $totalCount - 1;
+        }
+        if ($currentIndex < 0) {
+            $currentIndex = 0;
         }
 
-        $allAnswered = ($currentQuestion === null);
+        $sessionService->setCurrentQuestionIndex(auth()->id(), $test->id, $currentIndex);
 
-        if ($allAnswered) {
-            return view('tests.complete', [
-                'test' => $test,
-                'answers' => $answers,
-            ]);
-        }
-
+        $currentQuestion = $questions[$currentIndex];
         $options = json_decode($currentQuestion->options, true);
+        $currentAnswer = $answers[$currentQuestion->id] ?? null;
+
+        $questionsStatus = [];
+        foreach ($questions as $index => $question) {
+            $questionsStatus[] = [
+                'id' => $question->id,
+                'index' => $index,
+                'is_answered' => !is_null($answers[$question->id] ?? null),
+                'is_current' => $index == $currentIndex,
+            ];
+        }
+
+        $allAnswered = ($answeredCount == $totalCount);
 
         return view('tests.answer', [
             'test' => $test,
-            'question' => $currentQuestion,
+            'currentQuestion' => $currentQuestion,
             'options' => $options,
-            'currentAnswer' => $answers[$currentQuestionId] ?? null,
-            'answeredCount' => count(array_filter($answers)),
-            'totalCount' => $questions->count(),
+            'currentAnswer' => $currentAnswer,
+            'currentIndex' => $currentIndex,
+            'totalCount' => $totalCount,
+            'answeredCount' => $answeredCount,
+            'questionsStatus' => $questionsStatus,
+            'allAnswered' => $allAnswered,
+            'answers' => $answers,
         ]);
     }
 
@@ -91,31 +102,45 @@ class TestController extends Controller
         $request->validate([
             'question_id' => 'required|exists:questions,id',
             'answer' => 'required|string|in:A,B,C,D',
-            'next' => 'nullable|boolean',
         ]);
 
         $sessionService->saveAnswer(
             auth()->id(),
             $test->id,
-            $request->question_id,
+            (int) $request->question_id,
             $request->answer
         );
 
-        if ($request->has('next') && $request->next == 1) {
-            return redirect()->route('tests.answer', $test);
+        return redirect()->route('tests.answer', ['test' => $test, 'index' => $request->current_index ?? 0])
+            ->with('success', 'Ответ сохранён!');
+    }
+    public function index(Request $request): View
+    {
+        $query = Test::with(['question_level', 'topic']);
+
+        // Фильтр по теме
+        if ($request->filled('topic_id')) {
+            $query->where('topic_id', $request->topic_id);
         }
 
-        return redirect()->route('tests.answer', $test);
-    }
-    public function index(): View
-    {
-        $tests = Test::query()
-            ->orderBy('created_at')
-            ->with(['question_level', 'topic'])
-            ->paginate(self::PAGINATE_PER_PAGE);
+        // Фильтр по уровню
+        if ($request->filled('level_id')) {
+            $query->where('level_id', $request->level_id);
+        }
+
+        $tests = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(self::PAGINATE_PER_PAGE)
+            ->withQueryString();
+
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
 
         return view('tests.index', [
-            'tests' => $tests
+            'tests' => $tests,
+            'topics' => $topics,
+            'levels' => $levels,
+            'filters' => $request->only(['topic_id', 'level_id']),
         ]);
     }
 
@@ -297,5 +322,25 @@ class TestController extends Controller
     {
         $tests = Test::onlyTrashed()->orderBy('id')->get();
         return view('tests.trashed', ['tests' => $tests]);
+    }
+
+    public function navigate(Request $request, Test $test, TestSessionService $sessionService)
+    {
+        $request->validate([
+            'direction' => 'required|in:prev,next',
+            'current_index' => 'required|integer|min:0',
+        ]);
+
+        $questions = $test->questions()->get();
+        $totalCount = $questions->count();
+        $currentIndex = (int) $request->current_index;
+
+        if ($request->direction === 'prev') {
+            $newIndex = max(0, $currentIndex - 1);
+        } else {
+            $newIndex = min($totalCount - 1, $currentIndex + 1);
+        }
+
+        return redirect()->route('tests.answer', ['test' => $test, 'index' => $newIndex]);
     }
 }

@@ -103,6 +103,12 @@ Route::prefix('results')->name('results.')->group(function () {
     Route::get('{result}', [ResultController::class, 'show'])
         ->middleware(['auth', 'role:admin,teacher'])
         ->name('show');
+    Route::get('/results/export/excel', [ResultController::class, 'exportExcel'])
+        ->middleware(['auth', 'role:admin,teacher'])
+        ->name('results.export.excel');
+    Route::get('/results/{result}/export-detail', [ResultController::class, 'exportDetail'])
+        ->middleware(['auth', 'role:admin,teacher'])
+        ->name('results.export.detail');
     Route::delete('{result}', [ResultController::class, 'destroy'])
         ->middleware(['auth', 'role:admin'])
         ->name('destroy');
@@ -171,8 +177,10 @@ Route::put('/admin/users/{user}/toggle-active', [UserController::class, 'toggleA
 //GO TESTS
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/tests/{test}/start', [TestController::class, 'start'])->name('tests.start');
+    Route::get('/tests/{test}/answer', [TestController::class, 'answer'])->name('tests.answer');
     Route::post('/tests/{test}/answer', [TestController::class, 'saveAnswer'])->name('tests.saveAnswer');
+    Route::post('/tests/{test}/navigate', [TestController::class, 'navigate'])->name('tests.navigate');
     Route::post('/tests/{test}/complete', [TestController::class, 'complete'])->name('tests.complete');
-    Route::get('/tests/{test}/result/{result}', [TestController::class, 'result'])->name('tests.result');
+    Route::get('/tests/{test}/result', [TestController::class, 'result'])->name('tests.result');
 });
 

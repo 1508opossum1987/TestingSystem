@@ -29,4 +29,13 @@
     <div style="margin-top: 15px;">
         <a href="{{ route('results.index') }}">Назад к списку</a>
     </div>
+
+    div style="margin-top: 15px; display: flex; gap: 10px;">
+    <a href="{{ route('results.export.detail', $result) }}">
+        <button style="background-color: #28a745; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer;">
+            Экспорт деталей в Excel
+        </button>
+    </a>
+    <a href="{{ route('results.index') }}">Назад к списку</a>
+    </div>
 @endsection

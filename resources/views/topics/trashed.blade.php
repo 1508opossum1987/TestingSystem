@@ -38,15 +38,22 @@
                             <button type="submit">Восстановить</button>
                         </form>
 
-                        <form action="{{ route('topics.forceDestroy', $topic->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('topics.forceDestroy', $topic->id) }}" method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Удалить навсегда? Это действие не обратимо.')">Удалить навсегда</button>
+                            <button type="submit"
+                                    onclick="return confirm('Удалить навсегда? Это действие не обратимо.')">Удалить
+                                навсегда
+                            </button>
                         </form>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        <div style="margin-top: 15px;">
+            {{ $topics->links() }}
+        </div>
     @endif
 @endsection

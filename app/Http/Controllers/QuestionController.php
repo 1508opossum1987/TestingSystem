@@ -15,15 +15,36 @@ use Illuminate\View\View;
 class QuestionController extends Controller
 {
     const PAGINATE_PER_PAGE = 15;
-    public function index(): View
+    public function index(Request $request): View
     {
-        $questions = Question::query()
-            ->orderBy('created_at')
-            ->with(['topic', 'question_level'])
-            ->paginate(self::PAGINATE_PER_PAGE);
+        $query = Question::with(['topic', 'question_level']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('question_text', 'LIKE', "%{$search}%");
+        }
+
+        if ($request->filled('topic_id')) {
+            $query->where('topic_id', $request->topic_id);
+        }
+
+        if ($request->filled('level_id')) {
+            $query->where('level_id', $request->level_id);
+        }
+
+        $questions = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(self::PAGINATE_PER_PAGE)
+            ->withQueryString(); // сохраняет параметры в пагинации
+
+        $topics = Topic::all();
+        $levels = QuestionLevel::all();
 
         return view('questions.index', [
-            'questions' => $questions
+            'questions' => $questions,
+            'topics' => $topics,
+            'levels' => $levels,
+            'filters' => $request->only(['search', 'topic_id', 'level_id']),
         ]);
     }
 

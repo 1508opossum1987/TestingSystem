@@ -58,6 +58,7 @@
         @endforeach
         </tbody>
     </table>
-
-    {{ $users->links() }}
+    <div style="margin-top: 15px;">
+        {{ $users->links() }}
+    </div>
 @endsection

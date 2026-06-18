@@ -32,20 +32,30 @@
                     <td>{{ Str::limit($question->question_text, 50) }}</td>
                     <td>{{ $question->deleted_at }}</td>
                     <td>
-                        <form action="{{ route('questions.restore', $question->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('questions.restore', $question->id) }}" method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('PUT')
                             <button type="submit">Восстановить</button>
                         </form>
 
-                        <form action="{{ route('questions.forceDestroy', $question->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('questions.forceDestroy', $question->id) }}" method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Удалить навсегда? Это действие не обратимо.')">Удалить навсегда</button>
+                            <button type="submit"
+                                    onclick="return confirm('Удалить навсегда? Это действие не обратимо.')">Удалить
+                                навсегда
+                            </button>
                         </form>
                     </td>
                 </tr>
             @endforeach
             </tbody>
+        </table>
+
+        <div style="margin-top: 15px;">
+            {{ $questions->links() }}
+        </div>
     @endif
 @endsection
